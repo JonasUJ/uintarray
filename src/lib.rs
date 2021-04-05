@@ -351,6 +351,7 @@ impl UintArray {
     pub fn extend<T: IntoIterator<Item = u128>>(&self, iter: T) -> Self {
         let len = self.len();
         let size = self.size();
+        let cap = self.cap();
 
         let mut iter_len: u128 = 0;
         let mut max: u128 = 0;
@@ -361,6 +362,10 @@ impl UintArray {
 
             if i > max {
                 max = i;
+            }
+
+            if iter_len > cap {
+                panic!("Cannot extend beyond capacity.");
             }
 
             // Everything is put in sequence in `items`.
