@@ -127,6 +127,13 @@ mod tests {
 
     #[test]
     #[should_panic]
+    fn test_extend_beyond_capacity() {
+        let ua = UintArray(524_314);
+        ua.extend(0..100);
+    }
+
+    #[test]
+    #[should_panic]
     fn test_extend_does_not_fit() {
         let ua = UintArray(524_314);
         ua.extend(16..);
