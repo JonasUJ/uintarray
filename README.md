@@ -20,7 +20,7 @@ let ua = ua
 ```
 Note that we reassign it afterwards. Each call to `append` returns a new UintArray with the element added at the end. This is also true for any other method that would mutate the UintArray, because the UintArray is actually immutable.
 
-The UintArray also implements the trait `IntoIter`, meaning that we can iterate the elements using a for loop.
+The UintArray also implements the trait `IntoIterator`, meaning that we can iterate the elements using a for loop.
 ```rust
 for elem in ua {
     print!("{} ", elem);
