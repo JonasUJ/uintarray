@@ -119,11 +119,6 @@ impl UintArray {
             panic!("Size must be a power of 2.")
         }
 
-        // TODO: Benchmark against this
-        // if size & (size - 1) != 0 {
-        //     panic!("Size must be a power of 2.")
-        // }
-
         UintArray(size_log_u)
     }
 
@@ -149,11 +144,6 @@ impl UintArray {
             panic!("item={} does not fit in size={}", item, size);
         }
     }
-
-    // TODO: Implement
-    // pub fn from_vec<T>(values: Vec::<T>) -> Self {
-    //
-    // }
 
     /// Gets the bit size of values stored in the UintArray.
     /// Same as what is passed to new_size().
@@ -254,6 +244,7 @@ impl UintArray {
     }
 
     /// Get the item at a given position, disregarding whether it exists.
+    #[inline]
     fn _at(&self, size: u128, offset: u128) -> Option<u128> {
         Some((Self::_mask(size) << offset & self.0) >> offset)
     }
@@ -285,6 +276,11 @@ impl UintArray {
 
         Self::_check_insert_panic(size, len, item);
 
+        self._append(item, size, len)
+    }
+
+    #[inline]
+    fn _append(&self, item:u128, size: u128, len: u128) -> Self {
         UintArray(self._set_len(len + 1) | item << len * size + META_BITS)
     }
 
@@ -314,8 +310,9 @@ impl UintArray {
         let size = self.size();
         Self::_check_insert_panic(size, len, item);
 
-        // TODO: Use .append in this case?
-        let pos = if pos > len { len } else { pos };
+        if pos > len {
+            return self._append(item, size, len);
+        }
 
         let offset = pos * size + META_BITS;
         let pos_mask = Self::_mask(offset);

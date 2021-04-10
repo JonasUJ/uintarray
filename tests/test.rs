@@ -104,6 +104,14 @@ mod tests {
     }
 
     #[test]
+    fn test_insert_append() {
+        let ua = UintArray(524_314);
+
+        // This is the same as appending
+        assert_eq!(4_718_626, ua.insert(3, 4).0);
+    }
+
+    #[test]
     #[should_panic]
     fn test_insert_exceed_capacity() {
         let ua = UintArray::new::<u64>();
